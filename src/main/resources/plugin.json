@@ -1,0 +1,5 @@
+{
+  "main" : "com.laynester.plugins.habbopages.Plugin",
+  "name" : "HabboPages",
+  "author" : "Laynester"
+}
