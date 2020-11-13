@@ -51,6 +51,8 @@ public class Plugin extends HabboPlugin implements EventListener {
 
         Emulator.getTexts().register("habbopages.leaderboard.duckets", "Duckets Leaderboard:");
 
+        Emulator.getTexts().register("habbopages.leaderboard.diamonds", "Diamonds Leaderboard:");
+
         registerPermission("cmd_leaderboard", "'0', '1', '2'", "1");
 
         CommandHandler.addCommand(new Commands());

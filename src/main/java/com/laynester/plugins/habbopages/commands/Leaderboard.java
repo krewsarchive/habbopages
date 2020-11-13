@@ -49,7 +49,43 @@ public class Leaderboard extends Command {
                     .append("</li>");
         }
 
-        this.message.append("</ul>");
+        this.message.append("</ul><h2></h2>");
+
+        this.message.append("<h2>")
+                .append(Emulator.getTexts().getValue("habbopages.leaderboard.duckets"))
+                .append("</h2>\n")
+                .append("<ul>");
+
+        ArrayList<com.laynester.plugins.habbopages.utils.Leaderboard> duck = Currency.Seasonal(0);
+
+        for(int i = 0; i < duck.size(); i++) {
+            this.message.append("<li>")
+                    .append("<b>")
+                    .append(duck.get(i).getUsername())
+                    .append(":</b>  ")
+                    .append(duck.get(i).getAmount())
+                    .append("</li>");
+        }
+
+        this.message.append("</ul><h2></h2>");
+
+        this.message.append("<h2>")
+                .append(Emulator.getTexts().getValue("habbopages.leaderboard.diamonds"))
+                .append("</h2>\n")
+                .append("<ul>");
+
+        ArrayList<com.laynester.plugins.habbopages.utils.Leaderboard> dia = Currency.Seasonal(5);
+
+        for(int i = 0; i < dia.size(); i++) {
+            this.message.append("<li>")
+                    .append("<b>")
+                    .append(dia.get(i).getUsername())
+                    .append(":</b>  ")
+                    .append(dia.get(i).getAmount())
+                    .append("</li>");
+        }
+
+        this.message.append("</ul><h2></h2>");
 
     }
 }
