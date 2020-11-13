@@ -9,6 +9,7 @@ import com.eu.habbo.plugin.HabboPlugin;
 import static com.eu.habbo.Emulator.*;
 import com.eu.habbo.plugin.events.emulator.EmulatorLoadedEvent;
 import com.laynester.plugins.habbopages.commands.*;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,6 +26,10 @@ public class Plugin extends HabboPlugin implements EventListener {
     public static Plugin INSTANCE = null;
 
     public static String PN = "HabboPages";
+
+    public static final String ANSI_PURPLE = "\u001B[35m";
+
+    public static final String ANSI_WHITE = "\u001B[37m";
 
     public void onEnable() throws Exception {
         INSTANCE = this;
@@ -66,8 +71,8 @@ public class Plugin extends HabboPlugin implements EventListener {
         return false;
     }
 
-    public static void Logger(String message) {
-        System.out.println("[" + ANSI_PURPLE + PN + ANSI_WHITE + "] " + message);
+    public void Logger(String message) {
+        LoggerFactory.getLogger(Plugin.class).info("[" + ANSI_PURPLE + PN + ANSI_WHITE + "] " + message);
     }
 
     private static void registerPermission(String name, String options, String defaultValue) {
