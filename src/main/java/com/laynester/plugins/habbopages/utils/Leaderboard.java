@@ -1,9 +1,9 @@
 package com.laynester.plugins.habbopages.utils;
 
 public class Leaderboard {
-    public String username;
+    private String username;
 
-    public int amount;
+    private int amount;
 
     public Leaderboard(String username, int amount) {
         this.username = username;

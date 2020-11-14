@@ -35,12 +35,13 @@ public class Currency {
     }
 
     public static ArrayList<Leaderboard> Seasonal(int type) {
-        ArrayList<Leaderboard> duckets = new ArrayList<>();
-        ArrayList<Leaderboard> diamonds = new ArrayList<>();
+        ArrayList<Leaderboard> seasonal = new ArrayList<>();
 
-        String query = "SELECT amount,u.username,type from users_currency,users AS u WHERE u.id = users_currency.user_id";
+        String query = "SELECT amount,u.username,type from users_currency,users AS u WHERE u.id = users_currency.user_id AND type = ? ORDER BY amount desc LIMIT 10";
 
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1,type);
+
             try (ResultSet set = statement.executeQuery()) {
                 int ind = 1;
 
@@ -49,16 +50,7 @@ public class Currency {
 
                     int amount = set.getInt("amount");
 
-                    int typee = set.getInt("type");
-
-                    switch(typee) {
-                        case 0:
-                            duckets.add(new Leaderboard(username,amount));
-                            break;
-                        case 5:
-                            diamonds.add(new Leaderboard(username,amount));
-                            break;
-                    }
+                    seasonal.add(new Leaderboard(username,amount));
 
                     ind++;
                 }
@@ -67,12 +59,6 @@ public class Currency {
             Emulator.getLogging().logSQLException(e);
         }
 
-        switch(type) {
-            case 0:
-                return duckets;
-            case 5:
-                return diamonds;
-        }
-        return duckets;
+        return seasonal;
     }
 }

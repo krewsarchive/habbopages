@@ -15,37 +15,53 @@ import java.util.ArrayList;
 public class Leaderboard extends Command {
     private StringBuilder message;
 
+    private ArrayList<com.laynester.plugins.habbopages.utils.Leaderboard> Credits;
+
+    private ArrayList<com.laynester.plugins.habbopages.utils.Leaderboard> Duckets;
+
+    private ArrayList<com.laynester.plugins.habbopages.utils.Leaderboard> Diamonds;
+
+
     public Leaderboard() { super("cmd_leaderboard", Emulator.getTexts().getValue("commands.keys.cmd_leaderboard").split(";")); }
 
     @Override
     public boolean handle(final GameClient gameClient, String[] strings) throws Exception {
         String name = "leaderboard.txt";
+
         this.message = new StringBuilder();
 
         this.message.append(Emulator.getTexts().getValue("habbopages.leaderboard.header"))
                 .append("\n");
 
+        Credits = Duckets = Diamonds = new ArrayList<>();
+
         currency();
 
         new Page(name,gameClient.getHabbo(),this.message);
+
         return true;
     }
 
     public void currency() {
+        if(Credits.size() <= 0) {
+            Credits = Currency.Credits();
+
+            Duckets = Currency.Seasonal(0);
+
+            Diamonds = Currency.Seasonal(5);
+        }
 
         this.message.append("<h2>")
                 .append(Emulator.getTexts().getValue("habbopages.leaderboard.credits"))
                 .append("</h2>\n")
                 .append("<ul>");
 
-        ArrayList<com.laynester.plugins.habbopages.utils.Leaderboard> cred = Currency.Credits();
-
-        for(int i = 0; i < cred.size(); i++) {
+        for(int i = 0; i < Credits.size(); i++) {
             this.message.append("<li>")
                     .append("<b>")
-                    .append(cred.get(i).getUsername())
+                    .append(Credits.get(i).getUsername())
                     .append(":</b>  ")
-                    .append(cred.get(i).getAmount())
+                    .append(Credits.get(i).getAmount())
                     .append("</li>");
         }
 
@@ -56,14 +72,13 @@ public class Leaderboard extends Command {
                 .append("</h2>\n")
                 .append("<ul>");
 
-        ArrayList<com.laynester.plugins.habbopages.utils.Leaderboard> duck = Currency.Seasonal(0);
 
-        for(int i = 0; i < duck.size(); i++) {
+        for(int i = 0; i < Duckets.size(); i++) {
             this.message.append("<li>")
                     .append("<b>")
-                    .append(duck.get(i).getUsername())
+                    .append(Duckets.get(i).getUsername())
                     .append(":</b>  ")
-                    .append(duck.get(i).getAmount())
+                    .append(Duckets.get(i).getAmount())
                     .append("</li>");
         }
 
@@ -74,18 +89,24 @@ public class Leaderboard extends Command {
                 .append("</h2>\n")
                 .append("<ul>");
 
-        ArrayList<com.laynester.plugins.habbopages.utils.Leaderboard> dia = Currency.Seasonal(5);
 
-        for(int i = 0; i < dia.size(); i++) {
+        for(int i = 0; i < Diamonds.size(); i++) {
             this.message.append("<li>")
                     .append("<b>")
-                    .append(dia.get(i).getUsername())
+                    .append(Diamonds.get(i).getUsername())
                     .append(":</b>  ")
-                    .append(dia.get(i).getAmount())
+                    .append(Diamonds.get(i).getAmount())
                     .append("</li>");
         }
 
         this.message.append("</ul><h2></h2>");
 
+        Emulator.getThreading().run(new Runnable()
+        {
+            @Override
+            public void run() {
+                Credits = Duckets = Diamonds = null;
+            }
+        }, Emulator.getConfig().getInt("habbopages.delay.mins") * 1000 * 60);
     }
 }
